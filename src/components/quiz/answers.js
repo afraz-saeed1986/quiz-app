@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import Loading from "@/src/app/quiz/loading";
+import Loading from "@/src/app/[lang]/quiz/loading";
 
 export default function Answers({answers,onAnswerSelected, selectedAnswerIndex}) {
     return answers.map((answer, index) => (

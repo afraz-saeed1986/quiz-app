@@ -2,9 +2,10 @@
 import { useState } from "react";
 import { quiz } from "@/src/data";
 import {Result,Buttons, Answers} from "@/src/components/quiz";
+import LocaleSwitcher from "@/src/components/localeSwitcher";
 
 
-export default function Quiz() {
+export default function Quiz({dict, lang}) {
     const [activeQuestion, setActiveQuestion] = useState(0);
     const [selectedAnswer,setSelectedAnswer] = useState('');
     const [checked, setChecked] = useState(false);
@@ -16,7 +17,7 @@ export default function Quiz() {
         wrongAnswers: 0
     });
 
-    const {questions} = quiz;
+    const questions = lang === "en-us" ? quiz.Enquestions : quiz.Faquestions;
 
     const {answers, correctAnswer} = questions[activeQuestion];
 
@@ -53,14 +54,19 @@ export default function Quiz() {
         setChecked(false);
     }
 
-    // throw new Error();
 
     return (
         <div className="container">
-            <h1>صفحه آزمون</h1>
+            <div className="text-center">
+                <LocaleSwitcher />
+            </div>
+            <h1>{dict["quiz"].title}</h1>
             <div>
                 {!showResult ? (
-                    <h2>آزمون : {activeQuestion + 1} از {" "}
+                    <h2>
+                        {dict["quiz"].quizNum1}: {" "} 
+                        {activeQuestion + 1} 
+                        {dict["quiz"].quizNum2}:{" "}
                         <span>{questions.length}</span>
                     </h2>
                 ) : null}
@@ -73,10 +79,10 @@ export default function Quiz() {
                             
                             <Answers answers={answers} onAnswerSelected={onAnswerSelected} selectedAnswerIndex={selectedAnswerIndex} />
                             
-                           <Buttons checked={checked} nextQuestion={nextQuestion} activeQuestion={activeQuestion} questions={questions}/>
+                           <Buttons checked={checked} nextQuestion={nextQuestion} activeQuestion={activeQuestion} questions={questions} dict={dict}/>
                         </div>
                     ) : (
-                          <Result result={result} questions={questions} />
+                          <Result result={result} questions={questions} dict={dict} />
                     )
                 }
             </div>
